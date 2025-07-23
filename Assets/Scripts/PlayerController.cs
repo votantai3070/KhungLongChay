@@ -9,11 +9,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckRadius = 0.2f;
+    private Animator animator;
+    [SerializeField] private BoxCollider2D normalCollider;
+    [SerializeField] private CapsuleCollider2D duckCollider;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        normalCollider.enabled = true;
+        duckCollider.enabled = false;
     }
 
     // Update is called once per frame
@@ -21,6 +27,7 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = CheckIfGrounded();
         HandleJump();
+        HandleDuck();
     }
 
     private bool CheckIfGrounded()
@@ -39,6 +46,22 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.linearVelocity = Vector2.up * jumpForce;
+        }
+    }
+
+    private void HandleDuck()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            normalCollider.enabled = false;
+            duckCollider.enabled = true;
+            animator.SetBool("isDuck", true);
+        }
+        else if (Input.GetKeyUp(KeyCode.S))
+        {
+            normalCollider.enabled = true;
+            duckCollider.enabled = false;
+            animator.SetBool("isDuck", false);
         }
     }
 }
