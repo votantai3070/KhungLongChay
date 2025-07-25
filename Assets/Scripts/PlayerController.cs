@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
         isGrounded = CheckIfGrounded();
         HandleJump();
         HandleDuck();
+        HandleSoundEffect();
     }
 
     private bool CheckIfGrounded()
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = Vector2.up * jumpForce;
         }
+
     }
 
     private void HandleDuck()
@@ -62,6 +64,31 @@ public class PlayerController : MonoBehaviour
             normalCollider.enabled = true;
             duckCollider.enabled = false;
             animator.SetBool("isDuck", false);
+        }
+    }
+
+    private void HandleSoundEffect()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            AudioManager.instance.PlayJumpClip();
+        }
+        if (isGrounded && !AudioManager.instance.HasPlayEffectSound())
+        {
+            AudioManager.instance.PlayTapClip();
+            AudioManager.instance.SetHasPlayEffectSound(true);
+        }
+        else if (!isGrounded)
+        {
+            AudioManager.instance.SetHasPlayEffectSound(false);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Obstacle"))
+        {
+            AudioManager.instance.PlayHurtClip();
         }
     }
 }

@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -46,6 +47,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3387827905
+    locked: 0
+  - name: Egg
+    uniqueID: 1579301135
     locked: 0
   m_RenderingLayers:
   - Default
